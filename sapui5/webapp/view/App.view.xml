@@ -46,12 +46,71 @@
                                 visible="false"
                                 items="{/ListCountry}"
                             >
-                            <items>
-                                <core:Item key= "{Key}" 
-                                    text="{Text}"/>
-
-                            </items>
+                                <items>
+                                    <core:Item
+                                        key="{Key}"
+                                        text="{Text}"
+                                    />
+                                </items>
                             </Select>
+                        </HBox>
+                    </FlexBox>
+
+                    <FlexBox
+                        justifyContent="Center"
+                        alignItems="Center"
+                        height="30vh"
+                    >
+                        <HBox>
+                            <Panel>
+                                <Table
+                                    id="tableEmployee"
+                                    items="{/Employees}"
+                                >
+                                    <columns>
+                                        <Column>
+                                            <header>
+                                                <Label text="{i18n>TableId}" />
+                                            </header>
+                                        </Column>
+
+                                        <Column>
+                                            <header>
+                                                <Label
+                                                    text="{i18n>TableName}"
+                                                />
+                                            </header>
+                                        </Column>
+
+                                        <Column>
+                                            <header>
+                                                <Label
+                                                    text="{i18n>TableCountry}"
+                                                />
+                                            </header>
+                                        </Column>
+
+                                        <Column>
+                                            <header>
+                                                <Label
+                                                    text="{i18n>TableCity}"
+                                                />
+                                            </header>
+                                        </Column>
+                                    </columns>
+                                    
+                                    <items>
+                                        <ColumnListItem>
+                                            <cells>
+                                                <Label text="{EmployeeID}" />
+                                                <Label text="{LastName}" />
+                                                <Label text="{FirstName}" />
+                                                <Label text="{Country}" />
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </Panel>
                         </HBox>
                     </FlexBox>
                 </content>

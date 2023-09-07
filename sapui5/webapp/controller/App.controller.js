@@ -13,9 +13,6 @@ sap.ui.define([
             var i18nBundle = oView.getModel("i18n").getResourceBundle();
 
             oJSONModel.loadData("./localService/mockdata/Employees.json", false);
-            oJSONModel.attachRequestCompleted(function (oEventModel){
-                console.log(JSON.stringify(oJSONModel.getData()));
-            });
             oView.setModel(oJSONModel);
         }
 
