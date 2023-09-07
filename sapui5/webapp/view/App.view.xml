@@ -3,6 +3,7 @@
     xmlns:mvc="sap.ui.core.mvc"
     displayBlock="true"
     xmlns="sap.m"
+    xmlns:core="sap.ui.core"
 >
     <App id="app">
         <pages>
@@ -11,7 +12,48 @@
                 title="{i18n>title}"
             >
                 <content>
-                    <Text text="Hello World" />
+                    <FlexBox
+                        justifyContent="Center"
+                        alignItems="Center"
+                        height="10vh"
+                    >
+                        <HBox>
+                            <Label
+                                id="labelEmployee"
+                                labelFor="inputEmployee"
+                                text="{i18n>labelEmployee}"
+                                class="sapUiSmallMargin"
+                            />
+                            <Input
+                                id="inputEmployee"
+                                maxLength="10"
+                                width="10rem"
+                                class="sapUiSmallMarginEnd"
+                                liveChange="onValidate"
+                            />
+                            <Label
+                                id="labelCountry"
+                                labelFor="slCountry"
+                                text="{i18n>labelCountry}"
+                                class="sapUiSmallMargin"
+                                visible="false"
+                            />
+                            <Select
+                                id="slCountry"
+                                forceSelection="false"
+                                visible="false"
+                            >
+                            <items>
+                                <core:Item key= "US" 
+                                    text="{i18n>countryUS}"/>
+                                <core:Item key= "UK" 
+                                    text="{i18n>countryUK}"/>
+                                <core:Item key= "ES" 
+                                    text="{i18n>countryES}"/>
+                            </items>
+                            </Select>
+                        </HBox>
+                    </FlexBox>
                 </content>
             </Page>
         </pages>
