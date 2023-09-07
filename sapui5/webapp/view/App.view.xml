@@ -27,13 +27,13 @@
                             <Input
                                 id="inputEmployee"
                                 maxLength="10"
+                                value="{/EmployeeId}"
                                 width="10rem"
                                 class="sapUiSmallMarginEnd"
                                 liveChange="onValidate"
                             />
                             <Label
                                 id="labelCountry"
-                                value="{/employeeId}"
                                 labelFor="slCountry"
                                 text="{i18n>labelCountry}"
                                 class="sapUiSmallMargin"
@@ -42,13 +42,13 @@
                             <Select
                                 id="slCountry"
                                 forceSelection="false"
-                                selectedKey="{/countryKey}"
+                                selectedKey="{/CountryKey}"
                                 visible="false"
-                                items="{/listCountry}"
+                                items="{/ListCountry}"
                             >
                             <items>
-                                <core:Item key= "{key}" 
-                                    text="{text}"/>
+                                <core:Item key= "{Key}" 
+                                    text="{Text}"/>
 
                             </items>
                             </Select>

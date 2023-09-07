@@ -11,26 +11,11 @@ sap.ui.define([
             var oJSONModel = new sap.ui.model.json.JSONModel(); //set JSON
             var oView = this.getView(); //get JSON
             var i18nBundle = oView.getModel("i18n").getResourceBundle();
-            var oJSON = { //Model json
-                employeeId : "12345",
-                countryKey : "UK",
-                listCountry: [
-                    {
-                        key : "U",
-                        text : i18nBundle.getText("countryUS") 
-                    },
-                    {
-                        key : "UK",
-                        text : i18nBundle.getText("countryUK") 
-                    },
-                    {
-                        key : "ES",
-                        text : i18nBundle.getText("countryES") 
-                    }
-                ]
-            };
 
-            oJSONModel.setData(oJSON); //pass the data of type JSON
+            oJSONModel.loadData("./localService/mockdata/Employees.json", false);
+            oJSONModel.attachRequestCompleted(function (oEventModel){
+                console.log(JSON.stringify(oJSONModel.getData()));
+            });
             oView.setModel(oJSONModel);
         }
 
