@@ -33,6 +33,7 @@
                             />
                             <Label
                                 id="labelCountry"
+                                value="{/employeeId}"
                                 labelFor="slCountry"
                                 text="{i18n>labelCountry}"
                                 class="sapUiSmallMargin"
@@ -41,15 +42,14 @@
                             <Select
                                 id="slCountry"
                                 forceSelection="false"
+                                selectedKey="{/countryKey}"
                                 visible="false"
+                                items="{/listCountry}"
                             >
                             <items>
-                                <core:Item key= "US" 
-                                    text="{i18n>countryUS}"/>
-                                <core:Item key= "UK" 
-                                    text="{i18n>countryUK}"/>
-                                <core:Item key= "ES" 
-                                    text="{i18n>countryES}"/>
+                                <core:Item key= "{key}" 
+                                    text="{text}"/>
+
                             </items>
                             </Select>
                         </HBox>
