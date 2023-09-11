@@ -56,9 +56,17 @@ sap.ui.define([
             onFilter.call(this);
         }
 
+        function showPostalCode(oEvent){
+            var itemPressed = oEvent.getSource();
+            var oContext =  itemPressed.getBindingContext();
+            var objectContext = oContext.getObject();
+            sap.m.MessageToast.show(objectContext.PostalCode);
+        }
+
         return Controller.extend("aa.sapui5.controller.App", {
             onInit : onInitv2,
             onFilter : onFilter,
-            onClearFilter : onClearFilter
+            onClearFilter : onClearFilter,
+            showPostalCode : showPostalCode
         });
     });
