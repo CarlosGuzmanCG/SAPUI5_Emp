@@ -30,20 +30,19 @@
                                 value="{/EmployeeId}"
                                 width="10rem"
                                 class="sapUiSmallMarginEnd"
-                                liveChange="onValidate"
                             />
                             <Label
                                 id="labelCountry"
                                 labelFor="slCountry"
                                 text="{i18n>labelCountry}"
                                 class="sapUiSmallMargin"
-                                visible="false"
+                                visible="true"
                             />
                             <Select
                                 id="slCountry"
                                 forceSelection="false"
                                 selectedKey="{/CountryKey}"
-                                visible="false"
+                                visible="true"
                                 items="{/ListCountry}"
                             >
                                 <items>
@@ -53,6 +52,13 @@
                                     />
                                 </items>
                             </Select>
+
+                            <Button id="btnFilter" class="sapUiSmallMarginEnd" text="{i18n>btnFilter}" icon="sap-icon://search"
+                                    press="onFilter" />
+
+                            <Button id="btnClearFilter" class="sapUiSmallMarginEnd" text="{i18n>btnClearFilter}" 
+                                    icon="sap-icon://clear-filter" press="onClearFilter" />
+                                    
                         </HBox>
                     </FlexBox>
 
@@ -98,7 +104,7 @@
                                             </header>
                                         </Column>
                                     </columns>
-                                    
+
                                     <items>
                                         <ColumnListItem>
                                             <cells>
