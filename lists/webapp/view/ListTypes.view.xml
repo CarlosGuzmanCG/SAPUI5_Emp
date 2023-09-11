@@ -1,7 +1,26 @@
 <mvc:View controllerName="aa.lists.controller.ListTypes"
-    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:mvc="sap.ui.core.mvc" 
+    xmlns:core="sap.ui.layout" 
+    displayBlock="true"
     xmlns="sap.m">
+
+    <Shell id="shell">
+    <App id="app">
+    <pages>
     <Page id="page" title="{i18n>title}">
-        <content />
+        <content>
+        <IconTabBar >
+            <items>
+                <IconTabFilter text="{i18n>objectList}"></IconTabFilter>
+                <IconTabFilter text="{i18n>standardList}"></IconTabFilter>
+                <IconTabFilter text="{i18n>inputList}"></IconTabFilter>
+                <IconTabFilter text="{i18n>notificationList}"></IconTabFilter>
+                <IconTabFilter text="{i18n>customList}"></IconTabFilter>
+            </items>
+        </IconTabBar>
+        </content>
     </Page>
+    </pages>
+    </App>
+    </Shell>
 </mvc:View>

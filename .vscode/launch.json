@@ -48,7 +48,7 @@
       "internalConsoleOptions": "openOnSessionStart",
       "outputCapture": "std",
       "env": {
-        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/project/lists\"}",
+        "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/project/lists\"}"
       }
     }
   ]

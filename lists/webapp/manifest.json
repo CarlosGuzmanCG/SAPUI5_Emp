@@ -96,10 +96,10 @@
       }
     },
     "rootView": {
-      "viewName": "aa.lists.view.App",
+      "viewName": "aa.lists.view.ListTypes",
       "type": "XML",
       "async": true,
-      "id": "App"
+      "id": "ListTypes"
     }
   }
 }
