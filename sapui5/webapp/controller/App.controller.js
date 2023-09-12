@@ -12,12 +12,28 @@ sap.ui.define([
         "use strict";
 
         function onInitv2(){
-            var oJSONModel = new sap.ui.model.json.JSONModel(); //set JSON
+            
             var oView = this.getView(); //get JSON
-            var i18nBundle = oView.getModel("i18n").getResourceBundle();
+            var oJSONModelEmpl = new sap.ui.model.json.JSONModel(); //set JSON
+            // var i18nBundle = oView.getModel("i18n").getResourceBundle();
+            oJSONModelEmpl.loadData("./localService/mockdata/Employees.json", false);
+            oView.setModel(oJSONModelEmpl, "jsonEmployees");
 
-            oJSONModel.loadData("./localService/mockdata/Employees.json", false);
-            oView.setModel(oJSONModel);
+            var oJSONModelCounties = new sap.ui.model.json.JSONModel();
+            oJSONModelCounties.loadData("./localService/mockdata/Countries.json", false);
+            oView.setModel(oJSONModelCounties, "jsonCountries");
+
+            var oJSONModelConfig = new sap.ui.model.json.JSONModel({
+                visibleID : true,
+                visibleName :  true,
+                visibleCountry : true,
+                visibleCity : false,
+                visibleBtnShowCity : true,
+                visibleBtnHideCity : false
+            });
+
+            oView.setModel(oJSONModelConfig, "jsonModelConfig");
+
         }
 
         function myCheck(){
@@ -34,7 +50,7 @@ sap.ui.define([
         }
 
         function onFilter(){
-            var oJSON = this.getView().getModel().getData();
+            var oJSON = this.getView().getModel("jsonCountries").getData();
             var filters = [];
             if(oJSON.EmployeeId !== ""){
                 filters.push(new Filter("EmployeeID", FilterOperator.EQ,oJSON.EmployeeId ));
@@ -50,7 +66,7 @@ sap.ui.define([
         }
 
         function onClearFilter(){
-            var oModel = this.getView().getModel();
+            var oModel = this.getView().getModel("jsonCountries");
             oModel.setProperty("/EmployeeId", "");
             oModel.setProperty("/CountryKey", "");
             onFilter.call(this);
@@ -58,15 +74,31 @@ sap.ui.define([
 
         function showPostalCode(oEvent){
             var itemPressed = oEvent.getSource();
-            var oContext =  itemPressed.getBindingContext();
+            var oContext =  itemPressed.getBindingContext("jsonEmployees");
             var objectContext = oContext.getObject();
             sap.m.MessageToast.show(objectContext.PostalCode);
+        }
+
+        function onShowCity(){
+            var oJSONModelConfig = this.getView().getModel("jsonModelConfig");
+            oJSONModelConfig.setProperty("/visibleCity", true);
+            oJSONModelConfig.setProperty("/visibleBtnShowCity", false);
+            oJSONModelConfig.setProperty("/visibleBtnHideCity", true);
+        }
+
+        function onHideCity(){
+            var oJSONModelConfig = this.getView().getModel("jsonModelConfig");
+            oJSONModelConfig.setProperty("/visibleCity", false);
+            oJSONModelConfig.setProperty("/visibleBtnShowCity", true);
+            oJSONModelConfig.setProperty("/visibleBtnHideCity", false);
         }
 
         return Controller.extend("aa.sapui5.controller.App", {
             onInit : onInitv2,
             onFilter : onFilter,
             onClearFilter : onClearFilter,
-            showPostalCode : showPostalCode
+            showPostalCode : showPostalCode,
+            onShowCity : onShowCity,
+            onHideCity : onHideCity
         });
     });

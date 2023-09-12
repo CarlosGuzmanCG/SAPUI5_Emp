@@ -12,113 +12,128 @@
                 title="{i18n>title}"
             >
                 <content>
-                    <FlexBox
-                        justifyContent="Center"
-                        alignItems="Center"
-                        height="10vh"
-                    >
-                        <HBox>
-                            <Label
-                                id="labelEmployee"
-                                labelFor="inputEmployee"
-                                text="{i18n>labelEmployee}"
-                                class="sapUiSmallMargin"
+                    <HBox>
+                        <Label
+                            id="labelEmployee"
+                            labelFor="inputEmployee"
+                            text="{i18n>labelEmployee}"
+                            class="sapUiSmallMargin"
+                        />
+                        <Input
+                            id="inputEmployee"
+                            maxLength="10"
+                            value="{jsonCountries>/EmployeeId}"
+                            width="10rem"
+                            class="sapUiSmallMarginEnd"
+                        />
+                        <Label
+                            id="labelCountry"
+                            labelFor="slCountry"
+                            text="{i18n>labelCountry}"
+                            class="sapUiSmallMargin"
+                            visible="true"
+                        />
+                        <Select
+                            id="slCountry"
+                            forceSelection="false"
+                            selectedKey="{jsonCountries>/CountryKey}"
+                            visible="true"
+                            items="{jsonCountries>/ListCountry}"
+                        >
+                            <items>
+                                <core:Item
+                                    key="{jsonCountries>Key}"
+                                    text="{jsonCountries>Text}"
+                                />
+                            </items>
+                        </Select>
+
+                        <Button
+                            id="btnFilter"
+                            class="sapUiSmallMarginEnd"
+                            text="{i18n>btnFilter}"
+                            icon="sap-icon://search"
+                            press="onFilter"
+                        />
+
+                        <Button
+                            id="btnClearFilter"
+                            class="sapUiSmallMarginEnd"
+                            text="{i18n>btnClearFilter}"
+                            icon="sap-icon://clear-filter"
+                            press="onClearFilter"
+                        />
+                    </HBox>
+
+                    <HBox>
+                        <Panel>
+                            <Button
+                                id="btnShowCity"
+                                text="{i18n>showCity}"
+                                visible="{jsonModelConfig>/visibleBtnShowCity}"
+                                press="onShowCity"
                             />
-                            <Input
-                                id="inputEmployee"
-                                maxLength="10"
-                                value="{/EmployeeId}"
-                                width="10rem"
-                                class="sapUiSmallMarginEnd"
+
+                            <Button
+                                id="btnHideCity"
+                                text="{i18n>hideCity}"
+                                visible="{jsonModelConfig>/visibleBtnHideCity}"
+                                press="onHideCity"
                             />
-                            <Label
-                                id="labelCountry"
-                                labelFor="slCountry"
-                                text="{i18n>labelCountry}"
-                                class="sapUiSmallMargin"
-                                visible="true"
-                            />
-                            <Select
-                                id="slCountry"
-                                forceSelection="false"
-                                selectedKey="{/CountryKey}"
-                                visible="true"
-                                items="{/ListCountry}"
-                            >
+
+                            <Table id="tableEmployee"
+                                   items="{jsonEmployees>/Employees}">
+
+                                <columns>
+                                    <Column visible="{jsonModelConfig>/visibleID}">
+                                        <header>
+                                            <Label text="{i18n>TableId}" />
+                                        </header>
+                                    </Column>
+
+                                    <Column visible="{jsonModelConfig>/visibleName}">
+                                        <header>
+                                            <Label text="{i18n>TableName}" />
+                                        </header>
+                                    </Column>
+
+                                    <Column visible="{jsonModelConfig>/visibleCountry}">
+                                        <header>
+                                            <Label text="{i18n>TableCountry}" />
+                                        </header>
+                                    </Column>
+
+                                    <Column visible="{jsonModelConfig>/visibleCity}">
+                                        <header>
+                                            <Label text="{i18n>TableCity}" />
+                                        </header>
+                                    </Column>
+                                </columns>
+
                                 <items>
-                                    <core:Item
-                                        key="{Key}"
-                                        text="{Text}"
-                                    />
+                                    <ColumnListItem
+                                        type="Active"
+                                        press="showPostalCode"
+                                    >
+                                        <cells>
+                                            <Label
+                                                text="{jsonEmployees>EmployeeID}"
+                                            />
+                                            <Label
+                                                text="{jsonEmployees>LastName}"
+                                            />
+                                            <Label
+                                                text="{jsonEmployees>FirstName}"
+                                            />
+                                            <Label
+                                                text="{jsonEmployees>Country}"
+                                            />
+                                        </cells>
+                                    </ColumnListItem>
                                 </items>
-                            </Select>
-
-                            <Button id="btnFilter" class="sapUiSmallMarginEnd" text="{i18n>btnFilter}" icon="sap-icon://search"
-                                    press="onFilter" />
-
-                            <Button id="btnClearFilter" class="sapUiSmallMarginEnd" text="{i18n>btnClearFilter}" 
-                                    icon="sap-icon://clear-filter" press="onClearFilter" />
-                                    
-                        </HBox>
-                    </FlexBox>
-
-                    <FlexBox
-                        justifyContent="Center"
-                        alignItems="Center"
-                        height="30vh"
-                    >
-                        <HBox>
-                            <Panel>
-                                <Table
-                                    id="tableEmployee"
-                                    items="{/Employees}"
-                                >
-                                    <columns>
-                                        <Column>
-                                            <header>
-                                                <Label text="{i18n>TableId}" />
-                                            </header>
-                                        </Column>
-
-                                        <Column>
-                                            <header>
-                                                <Label
-                                                    text="{i18n>TableName}"
-                                                />
-                                            </header>
-                                        </Column>
-
-                                        <Column>
-                                            <header>
-                                                <Label
-                                                    text="{i18n>TableCountry}"
-                                                />
-                                            </header>
-                                        </Column>
-
-                                        <Column>
-                                            <header>
-                                                <Label
-                                                    text="{i18n>TableCity}"
-                                                />
-                                            </header>
-                                        </Column>
-                                    </columns>
-
-                                    <items>
-                                        <ColumnListItem type="Active"  press="showPostalCode">
-                                            <cells>
-                                                <Label text="{EmployeeID}" />
-                                                <Label text="{LastName}" />
-                                                <Label text="{FirstName}" />
-                                                <Label text="{Country}" />
-                                            </cells>
-                                        </ColumnListItem>
-                                    </items>
-                                </Table>
-                            </Panel>
-                        </HBox>
-                    </FlexBox>
+                            </Table>
+                        </Panel>
+                    </HBox>
                 </content>
             </Page>
         </pages>
