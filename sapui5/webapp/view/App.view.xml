@@ -113,7 +113,7 @@
                                 <items>
                                     <ColumnListItem
                                         type="Active"
-                                        press="showPostalCode"
+                                        press="showOrders"
                                     >
                                         <cells>
                                             <Label
@@ -132,6 +132,12 @@
                                     </ColumnListItem>
                                 </items>
                             </Table>
+
+                            <HBox id="ordersTable">
+                                
+                            </HBox>
+
+
                         </Panel>
                     </HBox>
                 </content>
