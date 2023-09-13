@@ -65,81 +65,8 @@
                         />
                     </HBox>
 
-                    <HBox>
-                        <Panel>
-                            <Button
-                                id="btnShowCity"
-                                text="{i18n>showCity}"
-                                visible="{jsonModelConfig>/visibleBtnShowCity}"
-                                press="onShowCity"
-                            />
-
-                            <Button
-                                id="btnHideCity"
-                                text="{i18n>hideCity}"
-                                visible="{jsonModelConfig>/visibleBtnHideCity}"
-                                press="onHideCity"
-                            />
-
-                            <Table id="tableEmployee"
-                                   items="{jsonEmployees>/Employees}">
-
-                                <columns>
-                                    <Column visible="{jsonModelConfig>/visibleID}">
-                                        <header>
-                                            <Label text="{i18n>TableId}" />
-                                        </header>
-                                    </Column>
-
-                                    <Column visible="{jsonModelConfig>/visibleName}">
-                                        <header>
-                                            <Label text="{i18n>TableName}" />
-                                        </header>
-                                    </Column>
-
-                                    <Column visible="{jsonModelConfig>/visibleCountry}">
-                                        <header>
-                                            <Label text="{i18n>TableCountry}" />
-                                        </header>
-                                    </Column>
-
-                                    <Column visible="{jsonModelConfig>/visibleCity}">
-                                        <header>
-                                            <Label text="{i18n>TableCity}" />
-                                        </header>
-                                    </Column>
-                                </columns>
-
-                                <items>
-                                    <ColumnListItem
-                                        type="Active"
-                                        press="showOrders"
-                                    >
-                                        <cells>
-                                            <Label
-                                                text="{jsonEmployees>EmployeeID}"
-                                            />
-                                            <Label
-                                                text="{jsonEmployees>LastName}"
-                                            />
-                                            <Label
-                                                text="{jsonEmployees>FirstName}"
-                                            />
-                                            <Label
-                                                text="{jsonEmployees>Country}"
-                                            />
-                                        </cells>
-                                    </ColumnListItem>
-                                </items>
-                            </Table>
-
-                            <HBox id="ordersTable">
-                                
-                            </HBox>
-
-
-                        </Panel>
-                    </HBox>
+                    <core:Fragment fragmentName="aa.sapui5.fragment.TableEmployee" type="XML"/>
+                    
                 </content>
             </Page>
         </pages>
