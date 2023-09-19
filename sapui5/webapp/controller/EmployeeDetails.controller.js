@@ -1,6 +1,7 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller"
-], function (Controller) {
+    "sap/ui/core/mvc/Controller",
+    "aa/sapui5/model/formatter"
+], function (Controller, formatter) {
 
     function onCreateIncidence(){
         var tableIncidence = this.getView().byId("tableIncidence");
@@ -14,11 +15,32 @@ sap.ui.define([
         tableIncidence.addContent(newIncidence);
     }
 
+    function onDeleteIncidence (oEvent){
+        var tableIncidence = this.getView().byId("tableIncidence");
+        var rowIncidence = oEvent.getSource().getParent().getParent();
+        var incidenceModel = this.getView().getModel("incidenceModel");
+        var odata = incidenceModel.getData();
+        var contextObj = rowIncidence.getBindingContext("incidenceModel");
+
+        odata.splice(contextObj.index - 1, 1);
+        for(var i in odata){
+            odata[i].index = parseInt(i) + 1;
+        }
+        incidenceModel.refresh();
+        tableIncidence.removeContent(rowIncidence);
+
+        for(var j in tableIncidence.getContent()){
+            tableIncidence.getContent()[j].bindElement("incidenceModel>/"+j);
+        }
+    }
+
     return Controller.extend("aa.sapui5.controller.EmployeeDetails", {
         onInit: function () {
         },
 
-        onCreateIncidence : onCreateIncidence
+        Formatter : formatter,
+        onCreateIncidence : onCreateIncidence,
+        onDeleteIncidence : onDeleteIncidence
 
     });
 });
