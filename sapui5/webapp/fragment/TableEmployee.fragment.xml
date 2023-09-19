@@ -19,7 +19,7 @@
 
         <Table
             id="tableEmployee"
-            items="{jsonEmployees>/Employees}"
+            items="{odataNorthwind>/Employees}"
         >
             <columns>
                 <Column visible="{jsonModelConfig>/visibleID}">
@@ -57,10 +57,10 @@
             <items>
                 <ColumnListItem type="Navigation" press="showEmployee">
                     <cells>
-                        <Label text="{jsonEmployees>EmployeeID}" />
-                        <Label text="{jsonEmployees>LastName}" />
-                        <Label text="{jsonEmployees>FirstName}" />
-                        <Label text="{jsonEmployees>Country}" />
+                        <Label text="{odataNorthwind>EmployeeID}" />
+                        <Label text="{odataNorthwind>LastName}" />
+                        <Label text="{odataNorthwind>FirstName}" />
+                        <Label text="{odataNorthwind>Country}" />
                         <core:Icon src="sap-icon://show" press="showOrders"></core:Icon>
                     </cells>
                 </ColumnListItem>

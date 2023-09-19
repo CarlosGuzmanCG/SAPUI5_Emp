@@ -16,7 +16,7 @@
       "toolsId": "1266a336-d08f-4450-b326-7e45f6d7947d"
     },
     "dataSources": {
-      "mainService": {
+      "Northwind.svc": {
         "uri": "/V2/Northwind/Northwind.svc/",
         "type": "OData",
         "settings": {
@@ -69,10 +69,15 @@
           "bundleName": "aa.sapui5.i18n.i18n"
         }
       },
-      "": {
-        "dataSource": "mainService",
+      "odataNorthwind": {
+        "dataSource": "Northwind.svc",
         "preload": true,
-        "settings": {}
+        "settings": {
+          "defaultOperationMode": "Server",
+          "defaultBindingMode" : "OneWay",
+          "defaultCountMode" : "Request",
+          "refreshAfterChange" : false
+        }
       }
     },
     "resources": {
