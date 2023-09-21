@@ -88,17 +88,17 @@
         }
       },
       "incidenceModel": {
-        "type" : "sap.ui.model.odata.v2.0DataModel",
+        "type" : "sap.ui.model.odata.v2.ODataModel",
         "dataSource": "YSAPUI5_SRV_01",
         "preload": true,
         "settings": {
-          "defaultOperationMode" : "Server",
+          "defaultOperationMode": "Server",
           "defaultBindingMode": "TwoWay",
-          "defaultCountMode" : "Request",
-          "refreshAfterChange" : false,
-          "useBatch" : false,
-          "defaultUpdateMethod" : "Put"
-        }
+          "defaultCountMode": "Request",
+          "refreshAfterChange": false,
+          "useBatch": false,
+          "defaultUpdateMethod": "Put"
+      }
       }
     },
     "resources": {

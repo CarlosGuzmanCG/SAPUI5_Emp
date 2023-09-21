@@ -22,6 +22,7 @@ server:
           - path: /sap
             url: http://erp13.sap4practice.com:9037
             client: '001'
+            destination: ERP
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:

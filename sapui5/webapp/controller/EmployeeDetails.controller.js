@@ -15,6 +15,13 @@ sap.ui.define([
         tableIncidence.addContent(newIncidence);
     }
 
+    function onSaveIncidence(oEvent){
+        var incidence = oEvent.getSource().getParent().getParent();
+        var incidenceRow = incidence.getBindingContext("incidenceModel");
+        //var temp = incidenceRow.sPath.replace('/','');
+        this._bus.publish("incidence", "onSaveIncidence", { incidenceRow: incidenceRow.sPath.replace('/', '') });
+    }
+
     function onDeleteIncidence (oEvent){
         var tableIncidence = this.getView().byId("tableIncidence");
         var rowIncidence = oEvent.getSource().getParent().getParent();
@@ -34,13 +41,16 @@ sap.ui.define([
         }
     }
 
-    return Controller.extend("aa.sapui5.controller.EmployeeDetails", {
-        onInit: function () {
-        },
+    function onInit(){
+        this._bus = sap.ui.getCore().getEventBus();
+    } 
 
-        Formatter : formatter,
+    return Controller.extend("aa.sapui5.controller.EmployeeDetails", {
+        onInit :  onInit,        
         onCreateIncidence : onCreateIncidence,
-        onDeleteIncidence : onDeleteIncidence
+        onDeleteIncidence : onDeleteIncidence,
+        Formatter : formatter,
+        onSaveIncidence : onSaveIncidence
 
     });
 });
