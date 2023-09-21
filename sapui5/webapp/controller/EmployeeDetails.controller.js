@@ -43,14 +43,34 @@ sap.ui.define([
 
     function onInit(){
         this._bus = sap.ui.getCore().getEventBus();
-    } 
+    }
+
+    function updateIncidenceCreationDate(oEvent){
+        var context = oEvent.getSource().getBindingContext("incidenceModel");
+        var contextObj = context.getObject();
+        contextObj.CreationDateX =true;
+    }
+
+    function updateIncidenceReason(oEvent){
+        var context = oEvent.getSource().getBindingContext("incidenceModel");
+        var contextObj = context.getObject();
+        contextObj.ReasonX =true;
+    }
+
+    function updateIncidenceType(oEvent){
+        var context = oEvent.getSource().getBindingContext("incidenceModel");
+        var contextObj = context.getObject();
+        contextObj.TypeX =true;
+    }
 
     return Controller.extend("aa.sapui5.controller.EmployeeDetails", {
         onInit :  onInit,        
         onCreateIncidence : onCreateIncidence,
         onDeleteIncidence : onDeleteIncidence,
         Formatter : formatter,
-        onSaveIncidence : onSaveIncidence
-
+        onSaveIncidence : onSaveIncidence,
+        updateIncidenceCreationDate : updateIncidenceCreationDate,
+        updateIncidenceReason : updateIncidenceReason,
+        updateIncidenceType : updateIncidenceType
     });
 });

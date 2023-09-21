@@ -19,19 +19,19 @@
             <HBox >
                 <VBox class="sapUiSmallMarginEnd">
                     <Text text="{i18n>incidenceDate}"></Text>
-                    <DatePicker dateValue="{incidenceModel>CreationDate}" />
+                    <DatePicker dateValue="{incidenceModel>CreationDate}" change="updateIncidenceCreationDate"/>
                 </VBox>
 
                 <VBox visible="{= ${incidenceModel>CreationDate} !== '' &amp;&amp; ${incidenceModel>CreationDate} !== undefined}"
                        class="sapUiSmallMarginEnd">
                     <Text text="{i18n>incidenceReason}"></Text>
-                    <Input value="{incidenceModel>Reason}"></Input>
+                    <Input value="{incidenceModel>Reason}" change="updateIncidenceReason"></Input>
                 </VBox>
 
                 <VBox visible="{= ${incidenceModel>CreationDate} !== '' &amp;&amp; ${incidenceModel>CreationDate} !== undefined}"
                        class="sapUiSmallMarginEnd">
                     <Text text="{i18n>incidenceType}"></Text>
-                    <Select selectedKey="{incidenceModel>Type}" forceSelection="false">
+                    <Select selectedKey="{incidenceModel>Type}" forceSelection="false" change="updateIncidenceType">
                         <core:Item key="0" text="{i18n>incidenceCorrect}"/>
                         <core:Item key="1" text="{i18n>incidencePending}"/>
                         <core:Item key="2" text="{i18n>incidenceError}"/>
