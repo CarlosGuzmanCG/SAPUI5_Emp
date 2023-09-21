@@ -45,6 +45,11 @@ sap.ui.define([
             var incidenceModel = new sap.ui.model.json.JSONModel([]);
             detailView.setModel(incidenceModel, "incidenceModel");
             detailView.byId("tableIncidence").removeAllContent();
+
+            var emp = this._detailEmployeeView.getBindingContext("odataNorthwind").getObject().EmployeeID;
+
+            this.onReadODataIncidence(emp);
+
         },
     
         onBeforeRendering : function () {
@@ -68,6 +73,7 @@ sap.ui.define([
     
                 this.getView().getModel("incidenceModel").create("/IncidentsSet", body, {
                     success: function () {
+                        this.onReadODataIncidence.bind(this)(employeeId);
                         sap.m.MessageToast.show(oResourceBundle.getText("odataSaveOk"));
                     }.bind(this),
                     error: function (e) {
@@ -79,6 +85,33 @@ sap.ui.define([
             } else {
                 sap.m.MessageToast.show(oResourceBundle.getText("odataNoChanges"));
             };
+        },
+
+        onReadODataIncidence : function(EmployeeID){
+            this.getView().getModel("incidenceModel").read("/IncidentsSet",{
+                filters: [
+                    new sap.ui.model.Filter("SapId","EQ", this.getOwnerComponent().SapId),
+                    new sap.ui.model.Filter("EmployeeId","EQ", EmployeeID.toString())
+                ],
+                success: function (data){
+                     var incidenceModel = this._detailEmployeeView.getModel("incidenceModel");
+                     incidenceModel.setData(data.results);
+                     var tableIncidence = this._detailEmployeeView.byId("tableIncidence");
+                     tableIncidence.removeAllContent(); //clear incidence
+
+                     for(var incidence in data.results){
+                        var newIncidence = sap.ui.xmlfragment("aa.sapui5.fragment.NewIncidence",this._detailEmployeeView.getController());
+                        this._detailEmployeeView.addDependent(newIncidence);
+                        newIncidence.bindElement("incidenceModel>/" + incidence);
+                        tableIncidence.addContent(newIncidence);
+                    }
+                     
+                }.bind(this),
+                error: function (e){
+
+                }
+            })
         }
+
     });
 });

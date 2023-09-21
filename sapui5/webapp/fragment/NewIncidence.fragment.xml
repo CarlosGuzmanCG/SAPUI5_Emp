@@ -8,7 +8,8 @@
                 <core:Icon src="{= ${incidenceModel>Type}==='0' ? 'accept' : 
                                 ${incidenceModel>Type}==='1' ? 'alert' : 
                                 ${incidenceModel>Type}==='2' ? 'decline' : '' }" />
-                    <Title text="{i18n>incidence}  {incidenceModel>IncidenceId} {path: 'incidenceModel>CreationDate', formatter:'.Formatter.dateFormat'}" ></Title>
+                    <Title text="{i18n>incidence} {= ${incidenceModel>IncidenceId} ? parseInt(${incidenceModel>IncidenceId}) : ''} 
+                                 {path: 'incidenceModel>CreationDate', formatter:'.Formatter.dateFormat'}" ></Title>
                     <ToolbarSpacer />
                     <Button icon="sap-icon://save" press="onSaveIncidence"/>
                     <core:Icon src = "delete" press="onDeleteIncidence"/>
