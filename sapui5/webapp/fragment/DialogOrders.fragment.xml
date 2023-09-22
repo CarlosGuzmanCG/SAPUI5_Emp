@@ -3,41 +3,8 @@
     xmlns="sap.m"
 >
     <Dialog title="{i18n>orders}">
-        <content>
-            <Table
-                items="{odataNorthwind>Orders}"
-                width="700px"
-            >
-                <columns>
-                    <Column>
-                        <header>
-                            <Label text="{i18n>OrderID}" />
-                        </header>
-                    </Column>
-
-                    <Column>
-                        <header>
-                            <Label text="{i18n>Freight}" />
-                        </header>
-                    </Column>
-
-                    <Column>
-                        <header>
-                            <Label text="{i18n>ShipAddress}" />
-                        </header>
-                    </Column>
-                </columns>
-
-                <items>
-                    <ColumnListItem>
-                        <cells>
-                            <Label text="{odataNorthwind>OrderID}" />
-                            <Label text="{odataNorthwind>Freight}" />
-                            <Label text="{odataNorthwind>ShipAddress}" />
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
+        <content >
+            <core:Fragment fragmentName="aa.sapui5.fragment.TableOrders" type="XML"/>
         </content>
 
         <endButton>
