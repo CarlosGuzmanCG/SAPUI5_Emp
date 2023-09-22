@@ -63,10 +63,20 @@ sap.ui.define([
         contextObj.TypeX =true;
     }
 
+    function onDeleteIncidenceV2 (oEvent){
+        var contextObj = oEvent.getSource().getBindingContext("incidenceModel").getObject();
+        this._bus.publish("incidence", "onDeleteIncidenceV2",{
+            IncidenceId: contextObj.IncidenceId,
+            SapId: contextObj.SapId,
+            EmployeeId: contextObj.EmployeeId
+        });
+    }
+
     return Controller.extend("aa.sapui5.controller.EmployeeDetails", {
         onInit :  onInit,        
         onCreateIncidence : onCreateIncidence,
-        onDeleteIncidence : onDeleteIncidence,
+        //onDeleteIncidence : onDeleteIncidence, //temp
+        onDeleteIncidenceV2 : onDeleteIncidenceV2,
         Formatter : formatter,
         onSaveIncidence : onSaveIncidence,
         updateIncidenceCreationDate : updateIncidenceCreationDate,

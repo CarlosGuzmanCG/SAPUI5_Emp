@@ -34,7 +34,28 @@ sap.ui.define([
 
             this._bus = sap.ui.getCore().getEventBus();
             this._bus.subscribe("flexible", "showEmployee", this.showEmployeeDetails, this);
+
             this._bus.subscribe("incidence", "onSaveIncidence", this.onSaveODataIncidence, this);
+
+            this._bus.subscribe("incidence", "onDeleteIncidenceV2", function (channelId, eventId, data) {
+
+                var oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
+
+                this.getView().getModel("incidenceModel").remove("/IncidentsSet(IncidenceId='" +
+                data.IncidenceId +
+                    "',SapId='" + data.SapId +
+                    "',EmployeeId='" + data.EmployeeId +
+                    "')", {
+                    success: function () {
+                        this.onReadODataIncidence.bind(this)(data.EmployeeId);//update
+                        sap.m.MessageToast.show(oResourceBundle.getText("odataDeleteOk"));
+                    }.bind(this),
+                    error: function (e) {
+                        sap.m.MessageToast.show(oResourceBundle.getText("odataDeleteKo"));
+                    }.bind(this)
+                });
+
+            }, this);
         },
 
         showEmployeeDetails: function (category, nameEvent, path) {
@@ -95,11 +116,11 @@ sap.ui.define([
                     ReasonX: incidenceModel[data.incidenceRow].ReasonX
                 };
 
-                this.getView().getModel("incidenceModel").update("/IncidentsSet(IncidenceId='"+
-                incidenceModel[data.incidenceRow].IncidenceId + 
-                "',SapId='"+incidenceModel[data.incidenceRow].SapId + 
-                "',EmployeeId='"+incidenceModel[data.incidenceRow].EmployeeId + 
-                "')", body, {
+                this.getView().getModel("incidenceModel").update("/IncidentsSet(IncidenceId='" +
+                    incidenceModel[data.incidenceRow].IncidenceId +
+                    "',SapId='" + incidenceModel[data.incidenceRow].SapId +
+                    "',EmployeeId='" + incidenceModel[data.incidenceRow].EmployeeId +
+                    "')", body, {
                     success: function () {
                         this.onReadODataIncidence.bind(this)(employeeId);
                         sap.m.MessageToast.show(oResourceBundle.getText("odataUpdateOk"));

@@ -12,7 +12,7 @@
                                  {path: 'incidenceModel>CreationDate', formatter:'.Formatter.dateFormat'}" ></Title>
                     <ToolbarSpacer />
                     <Button icon="sap-icon://save" press="onSaveIncidence"/>
-                    <core:Icon src = "delete" press="onDeleteIncidence"/>
+                    <core:Icon src = "delete" press="onDeleteIncidenceV2"/>
             </Toolbar>
         </headerToolbar>
         <content>
