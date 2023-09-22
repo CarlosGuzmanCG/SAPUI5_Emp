@@ -148,6 +148,9 @@ sap.ui.define([
                     tableIncidence.removeAllContent(); //clear incidence
 
                     for (var incidence in data.results) {
+
+                        data.results[incidence]._validateDate = true;
+
                         var newIncidence = sap.ui.xmlfragment("aa.sapui5.fragment.NewIncidence", this._detailEmployeeView.getController());
                         this._detailEmployeeView.addDependent(newIncidence);
                         newIncidence.bindElement("incidenceModel>/" + incidence);

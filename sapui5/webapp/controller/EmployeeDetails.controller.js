@@ -9,7 +9,7 @@ sap.ui.define([
         var incidenceModel = this.getView().getModel("incidenceModel");
         var odata = incidenceModel.getData();
         var index = odata.length;
-        odata.push({ index : index +1 });
+        odata.push({ index : index +1, _validateDate:false });
         incidenceModel.refresh();
         newIncidence.bindElement("incidenceModel>/" + index);
         tableIncidence.addContent(newIncidence);
@@ -46,15 +46,34 @@ sap.ui.define([
     }
 
     function updateIncidenceCreationDate(oEvent){
-        var context = oEvent.getSource().getBindingContext("incidenceModel");
-        var contextObj = context.getObject();
-        contextObj.CreationDateX =true;
+        let context = oEvent.getSource().getBindingContext("incidenceModel");
+        let contextObj = context.getObject();
+
+        if(!oEvent.getSource().isValidValue()){ // valid date
+            contextObj._validateDate = false;
+            contextObj.CreationDateState = "Error";
+        }else{
+            contextObj.CreationDateX = true;
+            contextObj._validateDate = true;
+            contextObj.CreationDateState = "None";
+        };
+
+        context.getModel().refresh(); // refresh view 
+
     }
 
     function updateIncidenceReason(oEvent){
-        var context = oEvent.getSource().getBindingContext("incidenceModel");
-        var contextObj = context.getObject();
-        contextObj.ReasonX =true;
+        let context = oEvent.getSource().getBindingContext("incidenceModel");
+        let contextObj = context.getObject();
+
+        if(oEvent.getSource().getValue()){ // valid date
+            contextObj.ReasonX = true;
+            contextObj.ReasonState = "None";
+        }else{
+            contextObj.ReasonState = "Error";
+        };
+
+        context.getModel().refresh(); // refresh view 
     }
 
     function updateIncidenceType(oEvent){
