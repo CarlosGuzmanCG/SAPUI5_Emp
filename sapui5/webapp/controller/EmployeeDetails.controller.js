@@ -1,7 +1,8 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "aa/sapui5/model/formatter"
-], function (Controller, formatter) {
+    "aa/sapui5/model/formatter",
+    "sap/m/MessageBox"
+], function (Controller, formatter, MessageBox) {
 
     function onCreateIncidence(){
         var tableIncidence = this.getView().byId("tableIncidence");
@@ -48,10 +49,22 @@ sap.ui.define([
     function updateIncidenceCreationDate(oEvent){
         let context = oEvent.getSource().getBindingContext("incidenceModel");
         let contextObj = context.getObject();
+        let oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
 
         if(!oEvent.getSource().isValidValue()){ // valid date
             contextObj._validateDate = false;
             contextObj.CreationDateState = "Error";
+
+            MessageBox.error(oResourceBundle.getText("errorCreationDateValue"), {
+                title: "Error",
+                onClose: null,
+                styleClass: "",
+                actions: MessageBox.Action.Close,
+                emphasizedAction: null,
+                initialFocus: null,
+                textDirection: sap.ui.core.TextDirection.Inherit
+            });
+
         }else{
             contextObj.CreationDateX = true;
             contextObj._validateDate = true;
