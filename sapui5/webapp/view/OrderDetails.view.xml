@@ -5,7 +5,20 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
 >
-    <Page >
-        <Text text="order details"></Text>
+    <Page>
+        <customHeader>
+            <Bar>
+                <contentLeft>
+                    <Button
+                        icon="sap-icon://nav-back"
+                        press="onBack"
+                    />
+                </contentLeft>
+
+                <contentMiddle>
+                    <Text text="order details" />
+                </contentMiddle>
+            </Bar>
+        </customHeader>
     </Page>
 </mvc:View>
