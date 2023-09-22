@@ -150,6 +150,7 @@ sap.ui.define([
                     for (var incidence in data.results) {
 
                         data.results[incidence]._validateDate = true;
+                        data.results[incidence].EnabledSave = false;
 
                         var newIncidence = sap.ui.xmlfragment("aa.sapui5.fragment.NewIncidence", this._detailEmployeeView.getController());
                         this._detailEmployeeView.addDependent(newIncidence);

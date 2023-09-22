@@ -10,10 +10,11 @@ sap.ui.define([
         var incidenceModel = this.getView().getModel("incidenceModel");
         var odata = incidenceModel.getData();
         var index = odata.length;
-        odata.push({ index : index +1, _validateDate:false });
+        odata.push({ index : index +1, _validateDate:false, EnabledSave : false });
         incidenceModel.refresh();
         newIncidence.bindElement("incidenceModel>/" + index);
         tableIncidence.addContent(newIncidence);
+
     }
 
     function onSaveIncidence(oEvent){
@@ -71,6 +72,12 @@ sap.ui.define([
             contextObj.CreationDateState = "None";
         };
 
+        if(oEvent.getSource().isValidValue() && contextObj.Reason){
+            contextObj.EnabledSave = true;
+        }else{
+            contextObj.EnabledSave = false;
+        };
+
         context.getModel().refresh(); // refresh view 
 
     }
@@ -86,13 +93,27 @@ sap.ui.define([
             contextObj.ReasonState = "Error";
         };
 
+        if(contextObj._validateDate && oEvent.getSource().getValue()){
+            contextObj.EnabledSave = true;
+        }else{
+            contextObj.EnabledSave = false;
+        }
+
         context.getModel().refresh(); // refresh view 
     }
 
     function updateIncidenceType(oEvent){
-        var context = oEvent.getSource().getBindingContext("incidenceModel");
-        var contextObj = context.getObject();
+        let context = oEvent.getSource().getBindingContext("incidenceModel");
+        let contextObj = context.getObject();
+
+        if(contextObj._validateDate && contextObj.Reason){
+            contextObj.EnabledSave = true;
+        }else{
+            contextObj.EnabledSave = false;
+        }
+
         contextObj.TypeX =true;
+        context.getModel().refresh();
     }
 
     function onDeleteIncidenceV2 (oEvent){
