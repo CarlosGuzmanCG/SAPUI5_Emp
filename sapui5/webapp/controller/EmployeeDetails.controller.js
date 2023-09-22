@@ -132,6 +132,14 @@ sap.ui.define([
         });
     }
 
+    function toOrderDetails(oEvent){
+        var orderID = oEvent.getSource().getBindingContext("odataNorthwind").getObject().OrderID;
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        oRouter.navTo("RouteOrderDetails",{
+            OrderID : orderID
+        });
+    }
+
     return Controller.extend("aa.sapui5.controller.EmployeeDetails", {
         onInit: onInit,
         onCreateIncidence: onCreateIncidence,
@@ -141,6 +149,7 @@ sap.ui.define([
         onSaveIncidence: onSaveIncidence,
         updateIncidenceCreationDate: updateIncidenceCreationDate,
         updateIncidenceReason: updateIncidenceReason,
-        updateIncidenceType: updateIncidenceType
+        updateIncidenceType: updateIncidenceType,
+        toOrderDetails : toOrderDetails
     });
 });

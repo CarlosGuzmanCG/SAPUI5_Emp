@@ -5,4 +5,7 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
 >
+    <Page >
+        <Text text="order details"></Text>
+    </Page>
 </mvc:View>

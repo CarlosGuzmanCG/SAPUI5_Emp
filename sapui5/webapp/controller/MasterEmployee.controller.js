@@ -84,6 +84,15 @@ sap.ui.define([
             var path = oEvent.getSource().getBindingContext("odataNorthwind").getPath();
             this._bus.publish("flexible","showEmployee",path);
         }
+
+        function toOrderDetails(oEvent){
+            var orderID = oEvent.getSource().getBindingContext("odataNorthwind").getObject().OrderID;
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("RouteOrderDetails",{
+                OrderID : orderID
+            });
+        }
+
         return Controller.extend("aa.sapui5.controller.MasterEmployee", {
             onInit : onInitv2,
             onFilter: onFilter,
@@ -93,6 +102,7 @@ sap.ui.define([
             onHideCity: onHideCity,
             showOrders: showOrders,
             onCloseOrders: onCloseOrders,
-            showEmployee : showEmployee
+            showEmployee : showEmployee,
+            toOrderDetails : toOrderDetails
         });
     });
