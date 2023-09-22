@@ -1,0 +1,8 @@
+<mvc:View
+    controllerName="aa.sapui5.controller.OrderDetails"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+</mvc:View>
