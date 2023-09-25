@@ -4,6 +4,13 @@ sap.ui.define([
 
 ], function (Controller, History) {
 
+    function _onObjectMatched(oEvent){
+        this.getView().bindElement({
+            path: "/Orders(" + oEvent.getParameter("arguments").OrderID + ")",
+            model : "odataNorthwind"
+        });
+    }
+
     function onBack(){
         var oHistory = History.getInstance();
         var sPreviosHash = oHistory.getPreviousHash();
@@ -17,7 +24,8 @@ sap.ui.define([
 
     return Controller.extend("aa.sapui5.controller.OrderDetails", {
         onInit: function () {
-            
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this); //routing
+            oRouter.getRoute("RouteOrderDetails").attachPatternMatched(_onObjectMatched,this); // route
         },
 
         onBack : onBack
