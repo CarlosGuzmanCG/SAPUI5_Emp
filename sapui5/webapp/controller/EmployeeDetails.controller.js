@@ -1,8 +1,8 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "aa/sapui5/controller/Base.controller",
     "aa/sapui5/model/formatter",
     "sap/m/MessageBox"
-], function (Controller, formatter, MessageBox) {
+], function (Base, formatter, MessageBox) {
 
     function onCreateIncidence() {
         var tableIncidence = this.getView().byId("tableIncidence");
@@ -132,24 +132,18 @@ sap.ui.define([
         });
     }
 
-    function toOrderDetails(oEvent){
-        var orderID = oEvent.getSource().getBindingContext("odataNorthwind").getObject().OrderID;
-        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-        oRouter.navTo("RouteOrderDetails",{
-            OrderID : orderID
-        });
-    }
 
-    return Controller.extend("aa.sapui5.controller.EmployeeDetails", {
-        onInit: onInit,
-        onCreateIncidence: onCreateIncidence,
-        //onDeleteIncidence : onDeleteIncidence, //temp
-        onDeleteIncidenceV2: onDeleteIncidenceV2,
-        Formatter: formatter,
-        onSaveIncidence: onSaveIncidence,
-        updateIncidenceCreationDate: updateIncidenceCreationDate,
-        updateIncidenceReason: updateIncidenceReason,
-        updateIncidenceType: updateIncidenceType,
-        toOrderDetails : toOrderDetails
-    });
+    var EmployeeDetails = Base.extend("aa.sapui5.controller.EmployeeDetails", {});
+
+    EmployeeDetails.prototype.onInit = onInit;
+    EmployeeDetails.prototype.onCreateIncidence = onCreateIncidence;
+    EmployeeDetails.prototype.onDeleteIncidenceV2 = onDeleteIncidenceV2;
+    EmployeeDetails.prototype.Formatter = formatter;
+    EmployeeDetails.prototype.onSaveIncidence = onSaveIncidence;
+    EmployeeDetails.prototype.updateIncidenceCreationDate = updateIncidenceCreationDate;
+    EmployeeDetails.prototype.updateIncidenceReason = updateIncidenceReason;
+    EmployeeDetails.prototype.updateIncidenceType = updateIncidenceType;
+
+    return EmployeeDetails;
+
 });

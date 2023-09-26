@@ -1,6 +1,6 @@
 // @ts-nocheck
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "aa/sapui5/controller/Base.controller",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator"
 ],
@@ -9,7 +9,7 @@ sap.ui.define([
     * @param {typeof sap.ui.model.Filter} Filter
     * @param {typeof sap.ui.model.FilterOperator} FilterOperator
     */
-    function (Controller, Filter, FilterOperator) {
+    function (Base, Filter, FilterOperator) {
         "use strict";
         function onInitv2() {
             this._bus = sap.ui.getCore().getEventBus();
@@ -85,24 +85,18 @@ sap.ui.define([
             this._bus.publish("flexible","showEmployee",path);
         }
 
-        function toOrderDetails(oEvent){
-            var orderID = oEvent.getSource().getBindingContext("odataNorthwind").getObject().OrderID;
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("RouteOrderDetails",{
-                OrderID : orderID
-            });
-        }
+        var Main = Base.extend("aa.sapui5.controller.MasterEmployee", {});
 
-        return Controller.extend("aa.sapui5.controller.MasterEmployee", {
-            onInit : onInitv2,
-            onFilter: onFilter,
-            onClearFilter: onClearFilter,
-            showPostalCode: showPostalCode,
-            onShowCity: onShowCity,
-            onHideCity: onHideCity,
-            showOrders: showOrders,
-            onCloseOrders: onCloseOrders,
-            showEmployee : showEmployee,
-            toOrderDetails : toOrderDetails
-        });
+        Main.prototype.onInit = onInitv2;
+        Main.prototype.onFilter = onFilter;
+        Main.prototype.onClearFilter = onClearFilter;
+        Main.prototype.showPostalCode = showPostalCode;
+        Main.prototype.onShowCity = onShowCity;
+        Main.prototype.onHideCity = onHideCity;
+        Main.prototype.showOrders = showOrders;
+        Main.prototype.onCloseOrders = onCloseOrders;
+        Main.prototype.showEmployee = showEmployee;
+
+        return Main;
+
     });
