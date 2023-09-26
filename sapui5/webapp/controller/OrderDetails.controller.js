@@ -6,10 +6,40 @@ sap.ui.define([
 ], function (Controller, History, MessageBox) {
 
     function _onObjectMatched(oEvent){
+
+        this.onClearSignature();
+
+
         this.getView().bindElement({
             path: "/Orders(" + oEvent.getParameter("arguments").OrderID + ")",
-            model : "odataNorthwind"
+            model: "odataNorthwind",
+            events:{
+                dataReceived: function(oData){
+                    _readSignature.bind(this)(oData.getParameter("data").OrderID,oData.getParameter("data").EmployeeID)
+                }.bind(this)
+            }
         });
+
+        const objContext = this.getView().getModel("odataNorthwind").getContext("/Orders("
+                + oEvent.getParameter("arguments").OrderID + ")").getObject();
+        if(objContext){
+            _readSignature.bind(this)(objContext.OrderID, objContext.EmployeeID);
+        }
+    }
+
+    function _readSignature(orderId,employeeId){
+            this.getView().getModel("incidenceModel").read("/SignatureSet(OrderId='" + orderId
+                + "',SapId='" + this.getOwnerComponent().SapId
+                + "',EmployeeId='" + employeeId + "')", {
+                success: function (data) {
+                    const signature = this.getView().byId("signature");
+                    if (data.MediaContent !== "") {
+                        signature.setSignature("data:image/png;base64," + data.MediaContent);
+                    }
+                }.bind(this),
+                error: function (data) {
+                }
+        })
     }
 
     function onBack(){
@@ -82,8 +112,6 @@ sap.ui.define([
             })
         };
     }
-
-
 
     return Controller.extend("aa.sapui5.controller.OrderDetails", {
         onInit: function () {
