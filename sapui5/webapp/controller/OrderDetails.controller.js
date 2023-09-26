@@ -22,13 +22,19 @@ sap.ui.define([
         };
     }
 
+    function onClearSignature(oEvent){
+        var signature = this.byId("signature");
+        signature.clear();
+    }
+
     return Controller.extend("aa.sapui5.controller.OrderDetails", {
         onInit: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this); //routing
             oRouter.getRoute("RouteOrderDetails").attachPatternMatched(_onObjectMatched,this); // route
         },
 
-        onBack : onBack
+        onBack : onBack,
+        onClearSignature:onClearSignature
 
     });
 
