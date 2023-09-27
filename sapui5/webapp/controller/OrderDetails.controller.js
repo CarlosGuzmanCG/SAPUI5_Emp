@@ -113,6 +113,17 @@ sap.ui.define([
         };
     }
 
+    function onFileBeforeUpload(oEvent){
+        let fileName = oEvent.getParameter("filename");
+        let objContext = oEvent.getSource().getBindingContext("odataNorthwind").getObject();
+        let oCustomerHeaderSlug = new sap.m.UploadCollectionParameter({
+            name: "slug",
+            value: objContext.OrderID + ";" + this.getOwnerComponent().SapId + ";" + objContext.EmployeeID + ";" + fileName
+        });
+
+        oEvent.getParameter().addHeaderParameter(oCustomerHeaderSlug);
+    }
+
     return Controller.extend("aa.sapui5.controller.OrderDetails", {
         onInit: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this); //routing
@@ -122,7 +133,8 @@ sap.ui.define([
         onBack : onBack,
         onClearSignature:onClearSignature,
         factoryOrderDetails:factoryOrderDetails,
-        onSaveSignature :onSaveSignature
+        onSaveSignature :onSaveSignature,
+        onFileBeforeUpload:onFileBeforeUpload
     });
 
 });
