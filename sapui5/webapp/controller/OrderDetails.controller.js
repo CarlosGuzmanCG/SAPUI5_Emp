@@ -1,33 +1,43 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
-    "sap/m/MessageBox"
+    "sap/m/MessageBox",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
 
-], function (Controller, History, MessageBox) {
+],
+    /**
+    * @param {typeof sap.ui.core.mvc.Controller} Controller
+    * @param {typeof sap.ui.model.Filter} Filter
+    * @param {typeof sap.ui.model.FilterOperator} FilterOperator
+    */
+    function (Controller, History, MessageBox, Filter, FilterOperator) {
 
-    function _onObjectMatched(oEvent){
+        function _onObjectMatched(oEvent) {
 
-        this.onClearSignature();
+            this.onClearSignature();
 
 
-        this.getView().bindElement({
-            path: "/Orders(" + oEvent.getParameter("arguments").OrderID + ")",
-            model: "odataNorthwind",
-            events:{
-                dataReceived: function(oData){
-                    _readSignature.bind(this)(oData.getParameter("data").OrderID,oData.getParameter("data").EmployeeID)
-                }.bind(this)
-            }
-        });
+            this.getView().bindElement({
+                path: "/Orders(" + oEvent.getParameter("arguments").OrderID + ")",
+                model: "odataNorthwind",
+                events: {
+                    dataReceived: function (oData) {
+                        _readSignature.bind(this)(oData.getParameter("data").OrderID, oData.getParameter("data").EmployeeID)
+                    }.bind(this)
+                }
+            });
 
-        const objContext = this.getView().getModel("odataNorthwind").getContext("/Orders("
+            const objContext = this.getView().getModel("odataNorthwind").getContext("/Orders("
                 + oEvent.getParameter("arguments").OrderID + ")").getObject();
-        if(objContext){
-            _readSignature.bind(this)(objContext.OrderID, objContext.EmployeeID);
+            if (objContext) {
+                _readSignature.bind(this)(objContext.OrderID, objContext.EmployeeID);
+            }
         }
-    }
 
-    function _readSignature(orderId,employeeId){
+        function _readSignature(orderId, employeeId) {
+
+            //Read signature image
             this.getView().getModel("incidenceModel").read("/SignatureSet(OrderId='" + orderId
                 + "',SapId='" + this.getOwnerComponent().SapId
                 + "',EmployeeId='" + employeeId + "')", {
@@ -39,113 +49,128 @@ sap.ui.define([
                 }.bind(this),
                 error: function (data) {
                 }
-        })
-    }
-
-    function onBack(){
-        var oHistory = History.getInstance();
-        var sPreviosHash = oHistory.getPreviousHash();
-        if(sPreviosHash !== undefined){
-            window.history.go(-1);
-        }else{
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("RouteMain", true);
-        };
-    }
-
-    function onClearSignature(oEvent){
-        var signature = this.byId("signature");
-        signature.clear();
-    }
-
-    function factoryOrderDetails (listId, oContext){
-        var contextObject = oContext.getObject();
-        contextObject.Currency = "EUR";
-        var unitsInStock = oContext.getModel().getProperty("/Products(" + contextObject.ProductID + ")/UnitsInStock");
-
-        if (contextObject.Quantity <= unitsInStock) {
-            var objectListItem = new sap.m.ObjectListItem({
-                title : "{odataNorthwind>/Products(" + contextObject.ProductID + ")/ProductName} ({odataNorthwind>Quantity})",
-                number : "{parts: [ {path: 'odataNorthwind>UnitPrice'}, {path: 'odataNorthwind>Currency'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure: false}}",
-                numberUnit: "{odataNorthwind>Currency}"
-            });
-            return objectListItem;
-        } else {
-            var customListItem = new sap.m.CustomListItem({
-                content: [
-                    new sap.m.Bar({
-                        contentLeft: new sap.m.Label({ text: "{odataNorthwind>/Products(" + contextObject.ProductID + ")/ProductName} ({odataNorthwind>Quantity})"}),
-                        contentMiddle:new sap.m.ObjectStatus({ text: "{i18n>availableStock} {odataNorthwind>/Products(" + contextObject.ProductID + ")/UnitsInStock}", state: "Error"}),
-                        contentRight: new sap.m.Label({text:"{parts: [ {path: 'odataNorthwind>UnitPrice'}, {path: 'odataNorthwind>Currency'}], type:'sap.ui.model.type.Currency'}"}) 
-                    })
-                ]
-            });
-            return customListItem;
-        }
-    }
-
-    function onSaveSignature(oEvent){
-        const signature = this.byId("signature");
-        const oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
-        let signaturePng;
-
-        if(!signature.isFill()){
-            MessageBox.error(oResourceBundle.getText("fillSignature"));
-        }else{
-            signaturePng = signature.getSignature().replace("data:image/png;base64,","");
-            let objectOrder = oEvent.getSource().getBindingContext("odataNorthwind").getObject();
-            let body = {
-                OrderId: objectOrder.OrderID.toString(),
-                SapId: this.getOwnerComponent().SapId,
-                EmployeeId: objectOrder.EmployeeID.toString(),
-                MimeType: "image/png",
-                MediaContent: signaturePng
-            };
-
-            this.getView().getModel("incidenceModel").create("/SignatureSet", body, {
-                success : function(){
-                    MessageBox.information(oResourceBundle.getText("signatureSave"));
-                },
-                error: function(){
-                    MessageBox.error(oResourceBundle.getText("signatureNotSave"));
-                }
             })
-        };
-    }
 
-    function onFileBeforeUpload(oEvent){
-        let fileName = oEvent.getParameter("fileName");
-        let objContext = oEvent.getSource().getBindingContext("odataNorthwind").getObject();
-        let oCustomerHeaderSlug = new sap.m.UploadCollectionParameter({
-            name: "slug",
-            value: objContext.OrderID + ";" + this.getOwnerComponent().SapId + ";" + objContext.EmployeeID + ";" + fileName
+            //Bind files
+            this.byId("uploadCollection").bindAggregation("items", {
+                path: "incidenceModel>/FilesSet",
+                filters: [
+                    new Filter("OrderId",FilterOperator.EQ, orderId),
+                    new Filter("SapId", FilterOperator.EQ, this.getOwnerComponent().SapId),
+                    new Filter("EmployeeId", FilterOperator.EQ, employeeId)
+                ],
+                template: new sap.m.UploadCollectionItem({
+                    documentId: "{incidenceModel>AttId}",
+                    visibleEdit: false,
+                    fileName : "{incidenceModel>FileName}"
+                }).attachPress(this.downloadFile)
+            });
+        }
+
+        function onBack() {
+            var oHistory = History.getInstance();
+            var sPreviosHash = oHistory.getPreviousHash();
+            if (sPreviosHash !== undefined) {
+                window.history.go(-1);
+            } else {
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                oRouter.navTo("RouteMain", true);
+            };
+        }
+
+        function onClearSignature(oEvent) {
+            var signature = this.byId("signature");
+            signature.clear();
+        }
+
+        function factoryOrderDetails(listId, oContext) {
+            var contextObject = oContext.getObject();
+            contextObject.Currency = "EUR";
+            var unitsInStock = oContext.getModel().getProperty("/Products(" + contextObject.ProductID + ")/UnitsInStock");
+
+            if (contextObject.Quantity <= unitsInStock) {
+                var objectListItem = new sap.m.ObjectListItem({
+                    title: "{odataNorthwind>/Products(" + contextObject.ProductID + ")/ProductName} ({odataNorthwind>Quantity})",
+                    number: "{parts: [ {path: 'odataNorthwind>UnitPrice'}, {path: 'odataNorthwind>Currency'}], type:'sap.ui.model.type.Currency', formatOptions: {showMeasure: false}}",
+                    numberUnit: "{odataNorthwind>Currency}"
+                });
+                return objectListItem;
+            } else {
+                var customListItem = new sap.m.CustomListItem({
+                    content: [
+                        new sap.m.Bar({
+                            contentLeft: new sap.m.Label({ text: "{odataNorthwind>/Products(" + contextObject.ProductID + ")/ProductName} ({odataNorthwind>Quantity})" }),
+                            contentMiddle: new sap.m.ObjectStatus({ text: "{i18n>availableStock} {odataNorthwind>/Products(" + contextObject.ProductID + ")/UnitsInStock}", state: "Error" }),
+                            contentRight: new sap.m.Label({ text: "{parts: [ {path: 'odataNorthwind>UnitPrice'}, {path: 'odataNorthwind>Currency'}], type:'sap.ui.model.type.Currency'}" })
+                        })
+                    ]
+                });
+                return customListItem;
+            }
+        }
+
+        function onSaveSignature(oEvent) {
+            const signature = this.byId("signature");
+            const oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
+            let signaturePng;
+
+            if (!signature.isFill()) {
+                MessageBox.error(oResourceBundle.getText("fillSignature"));
+            } else {
+                signaturePng = signature.getSignature().replace("data:image/png;base64,", "");
+                let objectOrder = oEvent.getSource().getBindingContext("odataNorthwind").getObject();
+                let body = {
+                    OrderId: objectOrder.OrderID.toString(),
+                    SapId: this.getOwnerComponent().SapId,
+                    EmployeeId: objectOrder.EmployeeID.toString(),
+                    MimeType: "image/png",
+                    MediaContent: signaturePng
+                };
+
+                this.getView().getModel("incidenceModel").create("/SignatureSet", body, {
+                    success: function () {
+                        MessageBox.information(oResourceBundle.getText("signatureSave"));
+                    },
+                    error: function () {
+                        MessageBox.error(oResourceBundle.getText("signatureNotSave"));
+                    }
+                })
+            };
+        }
+
+        function onFileBeforeUpload(oEvent) {
+            let fileName = oEvent.getParameter("fileName");
+            let objContext = oEvent.getSource().getBindingContext("odataNorthwind").getObject();
+            let oCustomerHeaderSlug = new sap.m.UploadCollectionParameter({
+                name: "slug",
+                value: objContext.OrderID + ";" + this.getOwnerComponent().SapId + ";" + objContext.EmployeeID + ";" + fileName
+            });
+
+            oEvent.getParameters().addHeaderParameter(oCustomerHeaderSlug);
+        }
+
+        function onFileChange(oEvent) {
+            let oUplodCollection = oEvent.getSource();
+            // Header Token CSRF - Cross-site request forgery
+            let oCustomerHeaderToken = new sap.m.UploadCollectionParameter({
+                name: "x-csrf-token",
+                value: this.getView().getModel("incidenceModel").getSecurityToken()
+            });
+            oUplodCollection.addHeaderParameter(oCustomerHeaderToken);
+        }
+
+        return Controller.extend("aa.sapui5.controller.OrderDetails", {
+            onInit: function () {
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this); //routing
+                oRouter.getRoute("RouteOrderDetails").attachPatternMatched(_onObjectMatched, this); // route
+            },
+
+            onBack: onBack,
+            onClearSignature: onClearSignature,
+            factoryOrderDetails: factoryOrderDetails,
+            onSaveSignature: onSaveSignature,
+            onFileBeforeUpload: onFileBeforeUpload,
+            onFileChange: onFileChange
         });
 
-        oEvent.getParameters().addHeaderParameter(oCustomerHeaderSlug);
-    }
-
-    function onFileChange(oEvent){
-        let oUplodCollection = oEvent.getSource();
-        // Header Token CSRF - Cross-site request forgery
-        let oCustomerHeaderToken = new sap.m.UploadCollectionParameter({
-            name: "x-csrf-token",
-            value: this.getView().getModel("incidenceModel").getSecurityToken()
-        });
-        oUplodCollection.addHeaderParameter(oCustomerHeaderToken);
-    }
-
-    return Controller.extend("aa.sapui5.controller.OrderDetails", {
-        onInit: function () {
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this); //routing
-            oRouter.getRoute("RouteOrderDetails").attachPatternMatched(_onObjectMatched,this); // route
-        },
-
-        onBack : onBack,
-        onClearSignature:onClearSignature,
-        factoryOrderDetails:factoryOrderDetails,
-        onSaveSignature :onSaveSignature,
-        onFileBeforeUpload:onFileBeforeUpload,
-        onFileChange:onFileChange
     });
-
-});
