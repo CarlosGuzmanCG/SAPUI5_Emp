@@ -55,20 +55,33 @@ sap.ui.define([
             this.byId("uploadCollection").bindAggregation("items", {
                 path: "incidenceModel>/FilesSet",
                 filters: [
-                    new Filter("OrderId",FilterOperator.EQ, orderId),
+                    new Filter("OrderId", FilterOperator.EQ, orderId),
                     new Filter("SapId", FilterOperator.EQ, this.getOwnerComponent().SapId),
                     new Filter("EmployeeId", FilterOperator.EQ, employeeId)
                 ],
                 template: new sap.m.UploadCollectionItem({
                     documentId: "{incidenceModel>AttId}",
                     visibleEdit: false,
-                    fileName : "{incidenceModel>FileName}"
+                    fileName: "{incidenceModel>FileName}"
                 }).attachPress(this.downloadFile)
             });
         }
 
-        function onFileUploadComplete (oEvent){
+        function onFileUploadComplete(oEvent) {
             oEvent.getSource().getBinding("items").refresh();
+        }
+
+        function onFileDeleted(oEvent) {
+            var oUploadCollection = oEvent.getSource();
+            var sPath = oEvent.getParameter("item").getBindingContext("incidenceModel").getPath();
+            this.getView().getModel("incidenceModel").remove(sPath, {
+                success: function () {
+                    oUploadCollection.getBinding("items").refresh();
+                },
+                error: function () {
+
+                }
+            });
         }
 
         function onBack() {
@@ -169,13 +182,14 @@ sap.ui.define([
                 oRouter.getRoute("RouteOrderDetails").attachPatternMatched(_onObjectMatched, this); // route
             },
 
-            onBack : onBack,
-            onClearSignature : onClearSignature,
-            factoryOrderDetails : factoryOrderDetails,
-            onSaveSignature : onSaveSignature,
-            onFileBeforeUpload : onFileBeforeUpload,
-            onFileChange : onFileChange,
-            onFileUploadComplete : onFileUploadComplete
+            onBack: onBack,
+            onClearSignature: onClearSignature,
+            factoryOrderDetails: factoryOrderDetails,
+            onSaveSignature: onSaveSignature,
+            onFileBeforeUpload: onFileBeforeUpload,
+            onFileChange: onFileChange,
+            onFileUploadComplete: onFileUploadComplete,
+            onFileDeleted: onFileDeleted
         });
 
     });
