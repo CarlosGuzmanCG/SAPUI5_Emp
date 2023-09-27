@@ -84,6 +84,11 @@ sap.ui.define([
             });
         }
 
+        function downloadFile(oEvent){
+            const sPath = oEvent.getSource().getBindingContext("incidenceModel").getPath();
+            window.open("/sap/opu/odata/sap/YSAPUI5_SRV_01" + sPath + "/$value");
+        }
+
         function onBack() {
             var oHistory = History.getInstance();
             var sPreviosHash = oHistory.getPreviousHash();
@@ -189,7 +194,8 @@ sap.ui.define([
             onFileBeforeUpload: onFileBeforeUpload,
             onFileChange: onFileChange,
             onFileUploadComplete: onFileUploadComplete,
-            onFileDeleted: onFileDeleted
+            onFileDeleted: onFileDeleted,
+            downloadFile:downloadFile
         });
 
     });
