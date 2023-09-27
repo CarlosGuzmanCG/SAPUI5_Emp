@@ -67,6 +67,10 @@ sap.ui.define([
             });
         }
 
+        function onFileUploadComplete (oEvent){
+            oEvent.getSource().getBinding("items").refresh();
+        }
+
         function onBack() {
             var oHistory = History.getInstance();
             var sPreviosHash = oHistory.getPreviousHash();
@@ -165,12 +169,13 @@ sap.ui.define([
                 oRouter.getRoute("RouteOrderDetails").attachPatternMatched(_onObjectMatched, this); // route
             },
 
-            onBack: onBack,
-            onClearSignature: onClearSignature,
-            factoryOrderDetails: factoryOrderDetails,
-            onSaveSignature: onSaveSignature,
-            onFileBeforeUpload: onFileBeforeUpload,
-            onFileChange: onFileChange
+            onBack : onBack,
+            onClearSignature : onClearSignature,
+            factoryOrderDetails : factoryOrderDetails,
+            onSaveSignature : onSaveSignature,
+            onFileBeforeUpload : onFileBeforeUpload,
+            onFileChange : onFileChange,
+            onFileUploadComplete : onFileUploadComplete
         });
 
     });
